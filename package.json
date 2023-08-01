@@ -1,0 +1,27 @@
+{
+  "name": "odin-todo",
+  "version": "1.0.0",
+  "description": "odin project todo list",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "webpack --progress --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/rulerpluralrural/odin-todo.git"
+  },
+  "author": "rulerpluralrural",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rulerpluralrural/odin-todo/issues"
+  },
+  "homepage": "https://github.com/rulerpluralrural/odin-todo#readme",
+  "devDependencies": {
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "date-fns": "^2.30.0"
+  }
+}
