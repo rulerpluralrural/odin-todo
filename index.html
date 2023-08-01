@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://kit.fontawesome.com/91f7703251.js" crossorigin="anonymous"></script>
+    <title>Todo App</title>
+</head>
+<body>
+
+    <div class="app-container" id="app-container">
+        <div class="app-header">
+            <div class="hamburger-menu"></div>
+            <div class="app-title">
+                <h1><i class="fa-solid fa-check-double"></i>Todo App</h1>
+            </div>
+        </div>
+
+        <div class="app-body">
+            <div class="app-sidebar">
+                    <div class="sidebar-upper-container">
+                    <div class="sidebar-header">
+                        <h1>Home</h1>
+                    </div>
+                    <div class="sidebar-upper-content">
+                        <button id="task-btn" class="style-button" data-sidebar-btn><i class="fa-solid fa-inbox"></i>Tasks</button>
+                    </div>
+                    <div class="sidebar-upper-content">
+                        <button id="day-btn" class="style-button" data-sidebar-btn><i class="fa-regular fa-calendar-days"></i>Today</button>
+                    </div>
+                    <div class="sidebar-upper-content">
+                        <button id="week-btn" class="style-button" data-sidebar-btn><i class="fa-solid fa-calendar-week"></i>This Week</button>
+                    </div>
+                    <div class="sidebar-upper-content">
+                        <button id="important-btn" class="style-button" data-sidebar-btn><i class="fa-solid fa-star"></i>Important</button>
+                    </div>
+                </div>
+
+                <div class="sidebar-lower-container">
+                    <div class="sidebar-lower-content">
+                        <div class="sidebar-header">
+                            <h2>Projects</h2>
+                        </div>
+                        <div id="project" class="project">
+                            <button id="add-project-btn" class="style-button">
+                                <i class="fa-regular fa-square-plus"></i>Add a Project
+                            </button>
+                            <div id="project-container" class="project-container"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content">
+                <div>
+                    <h1 class="content-header" id="content-header">Tasks</h1>
+                </div>
+                <div class="todo" id="todo">
+                    <button class="add-task-btn style-button" id="add-task-btn">
+                        <i class="fa-regular fa-square-plus"></i>
+                        Add a Task
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Pop Up for task -->
+
+    <div id="pop-up-tasks" class="pop-up-overlay hide">
+        <div class="pop-up-tasks">
+            <div class="task-header">
+                <h1>Add a Task</h1>
+                <a href="#" id="close-pop-up-tasks"><i class="fa-solid fa-xmark"></i></a>
+            </div>
+
+            <form class="form pop-up-tasks-form">
+                <label for="task-title">Title</label>
+                <input type="text" name="task-title" id="task-title">
+                <label for="description">Description</label>
+                <textarea name="description" id="description"></textarea>
+                <label for="date">Due Date</label>
+                <input type="date" name="date" id="date">
+                <select name="priority" id="priority">
+                    <option value="" disabled="" selected="">How important is this task?</option>
+                    <option value="low">! Low</option>
+                    <option value="medium">! Medium</option>
+                    <option value="high">! High</option>
+                </select>
+                
+                <div class="form-buttons">
+                    <button type="submit" class="submit-btn" id="submit-btn">Add</button>
+                <button class="cancel-btn" id="cancel-btn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Pop up for projects-->
+
+    <div id="pop-up-projects" class="pop-up-overlay hide">
+        <div class="pop-up-projects">
+            <div class="task-header">
+                <h1>Add a Project</h1>
+                <a href="#" id="close-pop-up-projects"><i class="fa-solid fa-xmark"></i></a>
+            </div>
+            <form id="pop-up-projects-form" class="form pop-up-projects-form">
+                <label for="projects-title">Project Title</label>
+                <input type="text" name="projects-title" id="projects-title" maxlength="30">
+                <div class="form-buttons">
+                    <button type="submit" class="submit-btn" id="projects-submit-btn">Add</button>
+                <button class="cancel-btn" id="projects-cancel-btn" type="button">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
