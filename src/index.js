@@ -1,7 +1,7 @@
 import Project from "./project"
 import Sidebar from "./sidebar"
 
-Project.appendProject()
+Project.appendTasks()
 Project.addProject()
 Project.toggleProjectPopUp()
-Sidebar.sideBtn()
+Project.sideBtn()

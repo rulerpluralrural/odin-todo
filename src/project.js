@@ -2,9 +2,28 @@
 
 export default class Project {
 
-    static projects = [{ id: 1,
-    name: 'Sample Project',
-    tasks: [] }]
+    static projects = [{ 
+        id: 1,
+        name: 'Sample Project 1',
+        tasks: [] },{ 
+        id: 2,
+        name: 'Sample Project 2',
+        tasks: [] 
+        }]
+        
+        static sideBtn() {
+            const sidebarBtn = document.querySelectorAll('[data-sidebar-btn]')
+    
+            sidebarBtn.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tasksHeader = document.getElementById('content-header')
+    
+                    const todoBtn = document.getElementById('todo')
+    
+                    tasksHeader.textContent = button.textContent
+                })
+            })
+        }
 
     // Add Projects to UI
     static addProject() {
@@ -49,7 +68,13 @@ export default class Project {
         return { id : randomId, name: name, tasks: [] }
     }
 
+    static appendTasks() {
+     
+        this.appendProject()
+    }
+
     static appendProject() {
+
         const projectsContainer = document.getElementById('project-container')
 
         this.clearElement(projectsContainer)
@@ -63,7 +88,7 @@ export default class Project {
             projectElement.innerHTML += `
                 <div class="left-el">
                     <i class="fa-solid fa-list-check"></i>
-                    <span>${project.name}</span>
+                    <span data-project-name>${project.name}</span>
                 </div>
                 <div class="right-el">
                     <div id="edit-btn" class="edit-btn">
@@ -78,13 +103,14 @@ export default class Project {
                 </div>`
 
                 projectElement.addEventListener('click', () => {
-                    const activeProject = document.querySelector('.active[data-project-id]')
+                    const activeProject = document.querySelector('.active-project[data-project-id]')
+                    const contentHeader = document.getElementById('content-header')
 
                         if(activeProject){
-                            activeProject.classList.remove('active')
+                            activeProject.classList.remove('active-project')
                         }
-                        projectElement.classList.add('active')
-
+                        projectElement.classList.add('active-project')
+                        contentHeader.textContent = project.name
                 })
                 
             projectsContainer.appendChild(projectElement)
