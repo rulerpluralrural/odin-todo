@@ -53,15 +53,46 @@
             </div>
 
             <div class="content">
+
                 <div>
                     <h1 class="content-header" id="content-header">Tasks</h1>
                 </div>
-                <div class="todo" id="todo">
+
+                <div class="todo-list" id="todo-list">
+                    <div class="todo-card">
+                        <label for="task-1" class="todo">Task 1
+                            <input type="checkbox" name="task-1" id="task-1">
+                            <span class="checkmark"></span>
+                        </label>
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        <i class="fa-solid fa-trash-can"></i>
+                    </div>
+
+                    <div class="todo-card">
+                        <label for="task-2" class="todo">Task 2 example very very very very very long task
+                            <input type="checkbox" name="task-2" id="task-2">
+                            <span class="checkmark"></span>
+                        </label>
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        <i class="fa-solid fa-trash-can"></i>
+                    </div>
+
+                    <div class="todo-card">
+                        <label for="task-3" class="todo">Task 3
+                            <input type="checkbox" name="task-3" id="task-3">
+                            <span class="checkmark"></span>
+                        </label>
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        <i class="fa-solid fa-trash-can"></i>
+                    </div>
+                </div>
+
+                <div class="add-task-container" id="add-task-container">
                     <button class="add-task-btn style-button" id="add-task-btn">
-                        <i class="fa-regular fa-square-plus"></i>
-                        Add a Task
+                        <i class="fa-solid fa-plus"></i>
                     </button>
                 </div>
+                
             </div>
 
         </div>
@@ -102,7 +133,7 @@
 
     <div id="pop-up-projects" class="pop-up-overlay hide">
         <div class="pop-up-projects">
-            <div class="task-header">
+            <div class="pop-up-projects-header">
                 <h1>Add a Project</h1>
                 <a href="#" id="close-pop-up-projects"><i class="fa-solid fa-xmark"></i></a>
             </div>

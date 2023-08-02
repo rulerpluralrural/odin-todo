@@ -11,15 +11,13 @@
 }
 
 :root {
-    --light-gry: #a5abaf;
-    --clr-yellow: #fef250;
-    --clr-yellow-opq: rgba(254, 242, 80, 0.8);
-    --clr-red: #f11313;
-    --clr-green: #3cf118;
-    --dark-gry: #373f51;
-    --dark-gry-opq: rgba(55, 63, 81, 0.9);
-    --white-clr: #fff;
-    --black-clr: #000;
+    --clr-header: #ff4719;
+    --clr-green: #2de907;
+    --light-gry: #d9d9da;
+    --light-gry-opq: rgba(240, 237, 237, 0.541);
+    --overlay-clr:  rgba(54, 54, 54, 0.973);
+    --white-clr: #fcfcfc;
+    --black-clr: #282931;
     --font-one: 'Assistant';
     --font-two: 'DM Sans';
 }
@@ -34,13 +32,7 @@ html {
 }
 
 body {
-    background-color: var(--light-gry);
-    color: var(--black-clr);
     font-family: var(--font-one);
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     position: relative;
 }
 
@@ -60,26 +52,21 @@ h2 {
 }
 
 body .app-container {
-    background-color: var(--clr-yellow);
-    width: 100%;
-    max-width: 1000px;
-    padding: 2.5rem 1.5rem;
+    height: 100vh;
+    background-color: var(--white-clr);
     display: flex;
     flex-direction: column;
-    justify-content: center;
 }
 
 .app-container .app-header {
     text-align: center;
-    padding: 1rem;
-    padding-bottom: 0;
-    margin-bottom: 1rem;
-    border-bottom: 2px solid var(--black-clr);
+    background-color: var(--clr-header);
+    padding: 1.5rem;
 }
 
 .app-header h1 {
     font-size: 2.6rem;
-    font-weight: bold;
+    color: var(--white-clr);
     font-family: var(--font-two), 'serif';
 }
 
@@ -88,15 +75,15 @@ body .app-container {
 }
 
 .app-container .app-body {
+    height: calc(100vh - 102px);
     display: grid;
-    grid-template-columns: 1fr 2fr;
-    grid-gap: 1rem;
+    grid-template-columns: 1fr 3fr;
 }
 
 .app-body .app-sidebar {
     text-align: left;
-    background-color: var(--dark-gry-opq);
-    color: var(--white-clr);
+    background-color: var(--light-gry);
+    color: var(--black-clr);
     border: none;
 }
 
@@ -105,9 +92,8 @@ body .app-container {
 }
 
 .sidebar-header h1 {
-    font-size: 1.8rem;
-    border-bottom: 2px solid var(--light-gry);
-    padding: .4rem;
+    font-size: 2.2rem;
+    padding-block: 1rem;
 }
 
 .sidebar-upper-container {
@@ -118,8 +104,8 @@ body .app-container {
 }
 
 .style-button {
-    font-size: 1.3rem;
-    color: var(--white-clr);
+    font-size: 1.4rem;
+    color: var(--black-clr);
     background-color: transparent;
     text-align: left;
     padding-inline: 1rem;
@@ -130,7 +116,9 @@ body .app-container {
 }
 
 .style-button:hover {
-    background-color: var(--dark-gry);
+    border-left: 5px solid var(--clr-header);
+    background-color: var(--black-clr);
+    color: var(--light-gry);
 }
 
 .sidebar-lower-content {
@@ -140,9 +128,9 @@ body .app-container {
 } 
 
 .sidebar-header h2 {
-    font-size: 1.8rem;
-    border-block: 2px solid var(--light-gry);
-    padding: .4rem;
+    font-size: 2.2rem;
+    /* border-top: 2px solid var(--white-clr); */
+    padding-block: 1rem;
 }
 
 .project {
@@ -167,16 +155,20 @@ body .app-container {
     justify-content: space-between;
     gap: .6rem;
     width: 100%;
+    min-width: 300px;
     background-color: transparent;
     border: none;
 }
 
-.active {
-    background-color: var(--dark-gry);
+.active-project {
+    background-color: var(--black-clr);
+    color: var(--light-gry);
+    border-left: 5px solid var(--clr-header);
 }
 
 .projects .left-el {
     display: flex;
+    flex-shrink: 0;
     align-items: center;
 }
 
@@ -199,7 +191,7 @@ body .app-container {
 }
 
 .right-el .del-btn:hover {
-    color: var(--clr-red);
+    color: var(--clr-header);
 }
 
 .right-el i {
@@ -211,25 +203,150 @@ body .app-container {
 .app-body .content {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    background-color: var(--light-gry-opq);
 }
 
-.content div:nth-child(1) {
-    border-bottom: 2px solid var(--black-clr);
-    margin-bottom: .5rem;
+div.content:nth-child(2) {
+    font-size: 1.4rem;
 }
 
-.todo button {
+.content-header {
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+}
+
+.add-task-container .add-task-btn {
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid var(--black-clr);
+    border-radius: 50%;
     color: var(--black-clr);
     text-align: center;
 }
 
-.todo button i {
-    margin-right: .5rem;
+.add-task-container button i {
+    margin: 0;
+    font-size: 1.5rem;
 }
 
-.todo button:hover {
+.add-task-container button:hover {
+    border: 3px solid var(--clr-green);
+    color: var(--clr-green);
+    background-color: transparent;
+}
+
+.todo-list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding: 2rem;
+}
+
+.todo-card {
+    background-color: var(--light-gry);
+    padding: .5rem 2rem;
+    width: 100%;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.todo-card:hover {
+    background-color: var(--black-clr);
     color: var(--white-clr);
-    background-color: var(--dark-gry-opq);
+}
+
+.todo-card i {
+    margin: 0;
+    cursor: pointer;
+}
+
+.todo-card i:nth-child(2) {
+    margin-right: 10px;
+}
+
+.todo-card i:nth-child(2):hover {
+    color: var(--clr-green);
+}
+
+.todo-card i:nth-child(3):hover {
+    color: var(--clr-header);
+}
+
+.todo {
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    text-align: left;
+    width: 100%;
+    cursor: pointer;
+    font-size: 1.7rem;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.todo input {
+    line-height: 2rem;
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+/* Create a custom checkbox */
+.todo .checkmark {
+    position: absolute;
+    top: 8px;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    border-radius: 50px;
+    background-color: var(--white-clr);
+}
+
+/* On mouse-over, add a grey background color */
+/* .todo:hover input ~ .checkmark {
+    background-color: var(--clr-green); 
+} */
+
+  /* When the checkbox is checked, add a green background */
+.todo input:checked ~ .checkmark {
+    background-color: var(--clr-green);
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the checkmark when checked */
+.todo input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the checkmark/indicator */
+.todo .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 7px;
+    height: 13px;
+    border: solid var(--white-clr);
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
 }
 
 /************************/
@@ -242,7 +359,7 @@ body .app-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--dark-gry-opq);
+    background-color: var(--overlay-clr);
     transition: opacity 300ms ease-in;
 }
 
@@ -260,14 +377,14 @@ body .app-container {
     position: relative;
     width: 550px;
     height: 600px;
-    background-color: var(--clr-yellow);
+    background-color: var(--clr-header);
     display: flex;
     flex-direction: column;
 }
 
-.task-header {
+.task-header,
+.pop-up-projects-header {
     padding: 1rem;
-    border-bottom: 2px solid var(--black-clr);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -278,16 +395,19 @@ body .app-container {
     font-weight: bold;
 }
 
-.task-header a {
+.task-header a,
+.pop-up-projects-header a {
     font-size: 1.6rem;
+    color: var(--white-clr);
     font-weight: bold;
     position: absolute;
     top: 0;
     right: 0;
 }
 
-.task-header a:hover {
-    color: var(--clr-red);
+.task-header a:hover,
+.pop-up-projects-header a:hover {
+    color: var(--clr-green);
 }
 
 .pop-up form {
@@ -298,7 +418,7 @@ body .app-container {
 }
 
 form label {
-    font-size: 1.4rem;
+    font-size: 1.8rem;
     font-weight: bold;
     font-family: var(--font-one), 'sans';
 }
@@ -341,13 +461,13 @@ form select {
 }
 
 .form-buttons button:first-child {
-    background-color: var(--dark-gry);
+    background-color: var(--clr-green);
     color: var(--white-clr);
 }
 
 .form-buttons button:nth-child(2) {
-    background-color: var(--light-gry);
-    color: var(--black-clr);
+    background-color: var(--clr-header);
+    color: var(--white-clr);
 }
 
 .form-buttons button {
@@ -370,27 +490,37 @@ form select {
 
 .pop-up-projects {
     position: relative;
-    width: 600px;
+    width: 650px;
     height: 300px;
-    background-color: var(--clr-yellow);
+    background-color: var(--white-clr);
+    color: var(--black-clr);
+    border-radius: 5px;
+    box-shadow: 7px 5px var(--black-clr);
     display: flex;
     flex-direction: column;
+}
+
+.pop-up-projects-header {
+    background-color: var(--clr-header);
+    color: var(--white-clr);
 }
 
 .pop-up-projects-form {
     display: flex;
     flex-direction: column;
-    padding: 1.5rem;
+    padding-block: 1rem;
     gap: 1rem;
 }
 
 .pop-up-projects-form input {
+    background-color: var(--light-gry-opq);
+    border: 1px solid var(--black-clr);
     width: 400px;
     margin: 0 auto;
 }
 
 .pop-up-projects-form label {
-    font-size: 1.7rem;
+    font-size: 1.8rem;
     text-align: center;
 }
 
