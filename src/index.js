@@ -1,7 +1,6 @@
-import Project from "./project"
-import Sidebar from "./sidebar"
+import UI from "./UI"
 
-Project.appendTasks()
-Project.addProject()
-Project.toggleProjectPopUp()
-Project.sideBtn()
+UI.addTasks()
+UI.appendProject()
+UI.addProject()
+UI.toggleProjectPopUp()
