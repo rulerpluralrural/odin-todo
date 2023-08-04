@@ -1,103 +1,138 @@
 import Task from "./Task"
+import Project from "./Project"
 
 export default class UI {
 
-    static projects = [{ 
-        id: 1,
-        name: 'Sample Project 1',
-        tasks: [] },{ 
-        id: 2,
-        name: 'Sample Project 2',
-        tasks: [] 
-        }]
+    static projects = [new Project('Sample Project 1'), new Project('Sample Project 2')]
 
-        static addTasks() {
+    static loadPage() {
+        this.toggleTaskPopUp()
+        this.toggleProjectPopUp()
+        this.getProject()
+        this.addTasks()
+        this.displayTasks()
+    }
 
-            // get project based on form input
-            const tasksForm = document.getElementById('pop-up-tasks-form')
-            const tasksTitle = document.getElementById('task-title')
-            const tasksDate = document.getElementById('task-date')
-            const tasksPriority = document.getElementById('task-priority')
-            const tasksCancelButton = document.getElementById('task-cancel-btn')
-            const taskAddButton = document.getElementById('task-submit-btn')
-            const popUpTasks = document.getElementById('pop-up-tasks')
-    
-            tasksForm.addEventListener('submit', (e) => {
-                e.preventDefault()
+    static displayTasks() {
 
-                const taskTitle = tasksTitle.value
-                const taskDate = tasksDate.value
-                const taskPriority = tasksPriority.value
+        const taskContainer = document.getElementById('todo-list')
+        const selectedProject = document.querySelector('.active-project[data-project-id]') 
 
-                if (taskTitle == null || taskTitle == '') return
-                if (taskDate == null || taskDate == '') return
-                if (taskPriority == null || taskPriority == '') return
+        if (selectedProject == null) return 
+        
+        const activeProject = this.projects.find(project => project.id == selectedProject.dataset.projectId)
 
-                tasksForm.reset()
+        this.clearElement(taskContainer)
 
-                const selectedProject = document.querySelector('.active-project[data-project-id]')
-
-                const activeProject = this.projects.find(project => project.id == selectedProject.dataset.projectId)
-
-                activeProject.tasks.push(taskTitle, taskDate, taskPriority)
-
-                console.log(this.projects)
-
-                this.appendTasks(taskTitle, taskDate, taskPriority)
-            })  
-    
-            taskAddButton.addEventListener('click', () => {
-                const taskTitle = tasksTitle.value
-                if (taskTitle == null || taskTitle == '') return
-                popUpTasks.classList.add('hide')
-                popUpTasks.style.transition = 'none'
-            })
-    
-            tasksCancelButton.addEventListener('click', () => {
-                popUpTasks.classList.add('hide')
-                popUpTasks.style.transition = 'none'
-                tasksTitle.value = null
-            })
-    
+        if (activeProject) {
+            taskContainer.appendChild(activeProject.getTasks())
         }
+    }
 
-    static appendTasks(title, date, priority) {
+    static addTasks() {
+
+        // get project based on form input
+        const tasksForm = document.getElementById('pop-up-tasks-form')
+        const tasksTitle = document.getElementById('task-title')
+        const tasksDate = document.getElementById('task-date')
+        const tasksPriority = document.getElementById('task-priority')
+        const tasksCancelButton = document.getElementById('task-cancel-btn')
+        const taskAddButton = document.getElementById('task-submit-btn')
+        const popUpTasks = document.getElementById('pop-up-tasks')
+
+        tasksForm.addEventListener('submit', (e) => {
+            e.preventDefault()
+
+            const taskTitle = tasksTitle.value
+            const taskDate = tasksDate.value
+            const taskPriority = tasksPriority.value
+            const taskPriorityText = tasksPriority.options[tasksPriority.selectedIndex].text
+
+            console.log(taskPriorityText)
+            if (taskTitle == null || taskTitle == '') {
+                return
+            } 
+            else if (taskDate == null || taskDate == '') {
+                return
+            }
+            else if (taskPriority == null || taskPriority == ''){   
+                return
+            }
+
+            tasksForm.reset()
+
+            const selectedProject = document.querySelector('.active-project[data-project-id]')
+
+            const activeProject = this.projects.find(project => project.id == selectedProject.dataset.projectId)
+
+            const activeProjectTask = activeProject.createTask(taskTitle, taskDate, taskPriorityText)
+
+            console.log(activeProjectTask)
+            console.log(activeProject)
+            console.log(activeProject.getTasks())
+
+            this.appendTasks(activeProjectTask)
+            // this.showActiveProject(activeProjectTask)
+        })  
+
+        taskAddButton.addEventListener('click', () => {
+
+            if (tasksTitle.value == null || tasksTitle.value == '') {
+                return
+            } 
+            else if (tasksDate.value == null || tasksDate.value == '') {
+                return
+            }
+            else if (tasksPriority.value == null || tasksPriority.value == '') {  
+                return
+            } 
+            else if (
+                tasksTitle.value !== null && tasksTitle.value !== '' && 
+                tasksDate.value !== null && tasksDate.value !== '' && tasksPriority.value !== null && tasksPriority.value !== ''
+                ) {
+                popUpTasks.classList.add('hide')
+            }
+        })
+    
+        tasksCancelButton.addEventListener('click', () => {
+            popUpTasks.classList.add('hide')
+            tasksTitle.value = null
+            tasksDate.value = null
+            tasksPriority.value = null  
+        })
+    }
+
+    static appendTasks(task) {
+        
         const taskContainer = document.getElementById('todo-list')
 
-            const tasksElement = document.createElement('div')
+        const tasksElement = document.createElement('div')
             tasksElement.classList.add('todo-card')
             tasksElement.id = 'todo-card'
             tasksElement.innerHTML += `
-            <label for="task-1" class="todo">${title}
-                <input type="checkbox" name="task-1" id="task-1">
+            <label class="todo">${task.name}
+                <input type="checkbox">
                 <span class="checkmark"></span>
             </label>
             <div class="todo-right-el">
-                <p class="task-date">${date}</p>
-                <p class="task-priority"${priority}</p>
+                <p class="task-date">${task.dueDate}</p>
+                <p class="task-priority">${task.priority}</p>
                 <i class="fa-solid fa-pen-to-square pen"></i>
                 <i class="fa-solid fa-trash-can trash"></i>
             </div>
             `
+        const checkbox = tasksElement.querySelector('input')
+        checkbox.checked = task.complete
+        checkbox.id = task.id
+        const label = tasksElement.querySelector('label')
+        label.htmlFor = task.id
 
         taskContainer.appendChild(tasksElement)
-
-    }
-        
-    static showActiveProject() {
-
-        const activeProject = document.querySelector('.active-project[data-project-id]')
-        const addTaskContainer = document.getElementById('add-task-container')
-
-        if (activeProject) {
-            addTaskContainer.classList.remove('hide')
-        }
-
-        this.toggleTaskPopUp()
+    
     }
 
     // Add Projects to UI
-    static addProject() {
+    static getProject() {
 
         // get project based on form input
         const projectsForm = document.getElementById('pop-up-projects-form')
@@ -111,11 +146,11 @@ export default class UI {
             const projectName = projectsInput.value
 
             if (projectName == null || projectName == '') return
-            const newProject = this.createProject(projectName)
+
+            const newProject = new Project(projectName)
             projectsInput.value = null
             this.projects.push(newProject)
             this.appendProject()
-            console.log(this.projects)
         })
 
         projectAddBtn.addEventListener('click', () => {
@@ -131,11 +166,13 @@ export default class UI {
             projectsInput.value = null
         })
 
+        this.appendProject()
     }
 
     static appendProject() {
 
         const projectsContainer = document.getElementById('project-container')
+        const addTaskContainer = document.getElementById('add-task-container')
 
         this.clearElement(projectsContainer)
 
@@ -170,23 +207,12 @@ export default class UI {
                             activeProject.classList.remove('active-project')
                         }
                         projectElement.classList.add('active-project')
+                        addTaskContainer.classList.remove('hide')
                         contentHeader.textContent = project.name
-                        this.showActiveProject()
                 })
                 
             projectsContainer.appendChild(projectElement)
         })
-    }
-
-     // Create an object of task
-    static createTask(name, date, priority) {
-        return { date : date, name: name, priority: priority, complete: false }
-    }
-
-    // Create an object of project
-    static createProject(name) {
-        let randomId = Math.floor(Math.random() * 500)
-        return { id : randomId, name: name, tasks: [] }
     }
 
     static clearElement(element) {

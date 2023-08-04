@@ -1,23 +1,23 @@
+import Task from "./Task"
+
 export default class Project {
 
-    constructor (id, name, tasks) {
-        this.id = id
+    constructor (name) {
+        this.id = Math.floor(Math.random() * 500)
         this.name = name
-        this.tasks = tasks
+        this.tasks = []
     }
-
-    getId() {
-        return this.randomId
-    }
-
-    setId(id) {
-        let randomId = Math.floor(Math.random() * 500)
-        this.id = id
-    }
-
-    getName() {
-        return this.name
-    }
-
     
+    createTask(name, dueDate, priority) {
+        const newTask = new Task(name, dueDate, priority)
+        this.tasks.push(newTask)
+
+        return newTask
+    }
+
+    getTasks() {
+        return this.tasks
+    }
+
+
 }
