@@ -58,7 +58,7 @@
                     <h1 class="content-header" id="content-header">Tasks</h1>
                 </div>
                 <div class="add-task-container hide" id="add-task-container">
-                    <button class="add-task-btn style-button" data-button-task>
+                    <button class="add-task-btn style-button">
                         <i class="fa-solid fa-plus"></i>
                     </button>
                 </div>
@@ -115,7 +115,7 @@
                 
                 <div class="form-buttons">
                     <button type="submit" class="task-submit-btn" id="task-submit-btn">Add</button>
-                <button class="task-cancel-btn" id="task-cancel-btn">Cancel</button>
+                <button class="task-cancel-btn" id="task-cancel-btn" type="button">Cancel</button>
                 </div>
             </form>
         </div>
@@ -137,6 +137,19 @@
                 <button class="cancel-btn" id="projects-cancel-btn" type="button">Cancel</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!--Edit Project Pop-up -->
+
+    <div id="pop-up-projects-edit" class="pop-up-overlay hide">
+        <div class="pop-up-projects">
+            <div class="pop-up-projects-header">
+                <h1>Edit Your Project</h1>
+                <a href="#" id="close-edit-project"><i class="fa-solid fa-xmark"></i></a>
+            </div>
+            <div id="edit-project-form">
+            </div>
         </div>
     </div>
 
