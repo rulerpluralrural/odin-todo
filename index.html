@@ -63,26 +63,6 @@
                     </button>
                 </div>
                 <div class="todo-list" id="todo-list">
-                    <!-- <div class="todo-card">
-                        <label for="task-1" class="todo">Task 1
-                            <input type="checkbox" name="task-1" id="task-1">
-                            <span class="checkmark"></span>
-                        </label>
-                        <div class="todo-right-el">
-                            <i class="fa-solid fa-pen-to-square pen"></i>
-                            <i class="fa-solid fa-trash-can trash"></i>
-                        </div>
-                    </div>
-
-                    <div class="todo-card">
-                        <label for="task-2" class="todo">Task 2 example very very very very very long task
-                            <input type="checkbox" name="task-2" id="task-2">
-                            <span class="checkmark"></span>
-                        </label>
-                        <div class="todo-right-el">
-                            <i class="fa-solid fa-pen-to-square pen"></i>
-                            <i class="fa-solid fa-trash-can trash"></i>
-                        </div> -->
                     </div>
                 </div>
 
@@ -100,24 +80,7 @@
                 <h1>Add a Task</h1>
                 <a href="#" id="close-pop-up-tasks"><i class="fa-solid fa-xmark"></i></a>
             </div>
-
-            <form class="form pop-up-tasks-form" id="pop-up-tasks-form">
-                <label for="task-title">Title</label>
-                <input type="text" name="task-title" id="task-title" maxlength="30" required>
-                <label for="date">Due Date</label>
-                <input type="date" name="date" id="task-date" required>
-                <label for="priority">Priority</label>
-                <select name="priority" id="task-priority" required>
-                    <option value="" disabled="" selected="">How important is this task?</option>
-                    <option value="not-important">Not Important</option>
-                    <option value="important">Important !</option>
-                </select>
-                
-                <div class="form-buttons">
-                    <button type="submit" class="task-submit-btn" id="task-submit-btn">Add</button>
-                <button class="task-cancel-btn" id="task-cancel-btn" type="button">Cancel</button>
-                </div>
-            </form>
+            <div id="pop-up-tasks-form"></div>
         </div>
     </div>
 
@@ -152,6 +115,18 @@
             </div>
         </div>
     </div>
+
+    <!--Edit Tasks Pop Up-->
+    <div id="pop-up-tasks-edit" class="pop-up-overlay hide">
+        <div class="pop-up-tasks">
+            <div class="task-header">
+                <h1>Add a Task</h1>
+                <a href="#" id="close-pop-up-tasks"><i class="fa-solid fa-xmark"></i></a>
+            </div>
+            <div id="edit-tasks-form"></div>
+        </div>
+    </div>
+
 
     <script src="main.js"></script>
 </body>

@@ -178,14 +178,12 @@ body .app-container {
 }
 
 .right-el .edit-btn ,
-.right-el .add-task-btn,
 .right-el .del-btn {
     font-size: 1.1rem;
     transition: color 200ms linear;
 }
 
-.right-el .edit-btn:hover,
-.right-el .add-task-btn:hover {
+.right-el .edit-btn:hover {
     color: var(--clr-green);
 }
 
@@ -448,7 +446,7 @@ div.content:nth-child(2) {
     font-size: 1.1rem;
 }
 
-form input#task-date,
+form input.task-date,
 form select  {
     padding-block: 0;
     border-radius: .2rem;
