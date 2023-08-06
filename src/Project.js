@@ -4,7 +4,13 @@ export default class Project {
 	constructor(name) {
 		this.id = Math.floor(Math.random() * 500);
 		this.name = name;
-		this.tasks = [];
+		this.tasks = [{
+			name: 'Sample Task 1',
+			dueDate: '09/28/2024',
+			priority: 'Not Important',
+			id: 33,
+			complete: false
+		}];
 	}
 
 	createTask(name, dueDate, priority) {

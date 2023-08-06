@@ -1,13 +1,11 @@
 import Task from "./Task";
-import Ui_task from "./Ui_task";
+import { createTaskElement, taskHandler } from "./Task_Element";
 import Project from "./Project";
 import Todos from "./Todos";
 
 export default class UI {
 	static loadPage() {
 		this.toggleProjectPopUp();
-		this.handleProjectForm();
-		this.handleTaskForm();
 	}
 
 	static displayTasks() {
@@ -19,61 +17,47 @@ export default class UI {
 		);
 
 		this.clearElement(taskContainer);
-
 		containerHeader.textContent = activeProject.name;
-
 		for (const task of activeProject.tasks) {
-			this.appendTasks(task);
+			this.appendTask(task)
 		}
+		taskHandler()
 	}
 
 	static handleTaskForm() {
-		const tasksForm = document.getElementById("pop-up-tasks-form");
-		const tasksTitle = document.getElementById("task-title");
-		const tasksDate = document.getElementById("task-date");
-		const tasksPriority = document.getElementById("task-priority");
-		const tasksCancelButton = document.getElementById("task-cancel-btn");
-		const taskAddButton = document.getElementById("task-submit-btn");
 		const popUpTasks = document.getElementById("pop-up-tasks");
+		const taskFormContainer = document.getElementById("pop-up-tasks-form");
+
+		taskFormContainer.innerHTML = "";
+
+		const tasksForm = document.createElement("form");
+		tasksForm.classList.add("form");
+		tasksForm.classList.add("pop-up-tasks-form");
+
+		tasksForm.innerHTML += `
+		<label for="task-title">Title</label>
+		<input type="text" name="task-title" id="task-title" maxlength="30" required>
+		<label for="date">Due Date</label>
+		<input type="date" name="date" class="task-date" id="task-date" required>
+		<label for="priority">Priority</label>
+		<select name="priority" id="task-priority" required>
+			<option value="" disabled="" selected="">How important is this task?</option>
+			<option value="not-important">Not Important</option>
+			<option value="important">Important !</option>
+		</select>
+		<div class="form-buttons">
+			<button type="submit" class="task-submit-btn" id="task-submit-btn">Add</button>
+			<button	button class="task-cancel-btn" id="task-cancel-btn" type="button">Cancel</button>
+		</div>
+		`;
+		taskFormContainer.appendChild(tasksForm);
 
 		tasksForm.addEventListener("submit", (e) => {
 			e.preventDefault();
+			const tasksTitle = document.getElementById("task-title");
+			const tasksDate = document.getElementById("task-date");
+			const tasksPriority = document.getElementById("task-priority");
 
-			const taskTitle = tasksTitle.value;
-			const taskDate = tasksDate.value;
-			const taskPriority = tasksPriority.value;
-			const taskPriorityText =
-				tasksPriority.options[tasksPriority.selectedIndex].text;
-
-			if (taskTitle == null || taskTitle == "") {
-				return;
-			} else if (taskDate == null || taskDate == "") {
-				return;
-			} else if (taskPriority == null || taskPriority == "") {
-				return;
-			}
-
-			tasksForm.reset();
-
-			const selectedProject = document.querySelector(
-				".active-project"
-			);
-
-			const activeProject = Todos.projects.find(
-				(project) => project.id == selectedProject.dataset.projectId
-			);
-			const activeProjectTask = activeProject.createTask(
-				taskTitle,
-				taskDate,
-				taskPriorityText
-			);
-
-			console.log(activeProjectTask);
-
-			this.appendTasks(activeProjectTask);
-		});
-
-		taskAddButton.addEventListener("click", () => {
 			if (tasksTitle.value == null || tasksTitle.value == "") {
 				return;
 			} else if (tasksDate.value == null || tasksDate.value == "") {
@@ -90,19 +74,35 @@ export default class UI {
 			) {
 				popUpTasks.classList.add("hide");
 			}
+
+			const selectedProject = document.querySelector('.active-project')
+
+			const activeProject = Todos.projects.find(
+				(project) => project.id == selectedProject.dataset.projectId
+			);
+
+			const activeProjectTask = activeProject.createTask(
+				tasksTitle.value,
+				tasksDate.value,
+				tasksPriority.options[tasksPriority.selectedIndex].text
+			);
+			tasksForm.reset();
+
+			this.appendTask(activeProjectTask)
 		});
+
+		const tasksCancelButton = document.getElementById("task-cancel-btn");
 
 		tasksCancelButton.addEventListener("click", () => {
 			popUpTasks.classList.add("hide");
-			tasksTitle.value = null;
-			tasksDate.value = null;
-			tasksPriority.value = null;
+			tasksForm.reset();
 		});
 	}
 
-	static appendTasks(task) {
+	static appendTask(activeProjectTask) {
 		const taskContainer = document.getElementById("todo-list");
-		taskContainer.appendChild(Ui_task(task));
+
+		taskContainer.appendChild(createTaskElement(activeProjectTask));
 	}
 
 	static handleProjectForm() {
@@ -142,7 +142,6 @@ export default class UI {
 
 	static appendProject() {
 		const projectsContainer = document.getElementById("project-container");
-		const taskContainer = document.getElementById("todo-list");
 		const addTaskContainer = document.getElementById("add-task-container");
 
 		this.clearElement(projectsContainer);
@@ -162,9 +161,6 @@ export default class UI {
                     <div id="edit-btn" class="edit-btn">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </div>
-                    <div class="add-task-btn" data-button-task> 
-                        <i class="fa-solid fa-plus"></i>
-                    </div>
                     <div class="del-btn" data-delete-project>
                         <i class="fa-solid fa-trash-can"></i>
                     </div>
@@ -175,14 +171,13 @@ export default class UI {
 				const projectTitle = projectElement.children[0].children[1];
 
 				if (e.target.classList.contains("fa-trash-can")) {
-                    Todos.deleteProject(project.id)
-                    projectElement.remove()
-					return;
-				} else if (e.target.classList.contains("fa-plus")) {
-					this.toggleTaskPopUp();
+					Todos.deleteProject(project.id);
+					projectElement.remove();
+					console.log(Todos.projects);
 					return;
 				} else if (e.target.classList.contains("fa-pen-to-square")) {
 					this.toggleEditProject(projectTitle, project);
+					console.log(Todos.projects);
 					return;
 				}
 
@@ -218,17 +213,8 @@ export default class UI {
 		closePopUp.addEventListener("click", () => {
 			popUpTasks.classList.add("hide");
 		});
-	}
 
-	static toggleTaskPopUp() {
-		const popUpTasks = document.getElementById("pop-up-tasks");
-		const closePopUp = document.getElementById("close-pop-up-tasks");
-
-		popUpTasks.classList.remove("hide");
-
-		closePopUp.addEventListener("click", () => {
-			popUpTasks.classList.add("hide");
-		});
+		this.handleTaskForm()
 	}
 
 	static toggleEditProject(projectName, project) {
@@ -236,10 +222,11 @@ export default class UI {
 		const editProjectPopUp = document.getElementById("pop-up-projects-edit");
 		const editProjectContainer = document.getElementById("edit-project-form");
 
-        editProjectContainer.innerHTML = ''
+		editProjectContainer.innerHTML = "";
 
 		const editProjectForm = document.createElement("form");
-        editProjectForm.classList.add("pop-up-projects-form")
+		editProjectForm.classList.add("pop-up-projects-form");
+		editProjectForm.classList.add("form");
 		editProjectForm.innerHTML = `
         <label for="edit-project-title">Change Project Title</label>
         <input type="text" name="edit-project-title" id="edit-project-title" maxlength="30" required>
@@ -248,14 +235,14 @@ export default class UI {
             <button class="cancel-btn" id="edit-project-cancel-btn" type="button">Cancel</button>
         </div>
         `;
-        editProjectContainer.appendChild(editProjectForm)
-        const editProjectTitle = document.getElementById("edit-project-title");
-        const editProjectCancelButton = document.getElementById(
+		editProjectContainer.appendChild(editProjectForm);
+		const editProjectTitle = document.getElementById("edit-project-title");
+		const editProjectCancelButton = document.getElementById(
 			"edit-project-cancel-btn"
 		);
 		const closeEditProject = document.getElementById("close-edit-project");
 		editProjectPopUp.classList.remove("hide");
-        editProjectTitle.value = project.name;
+		editProjectTitle.value = project.name;
 
 		editProjectForm.addEventListener("submit", (e) => {
 			e.preventDefault();
@@ -294,5 +281,7 @@ export default class UI {
 			popUpProjects.classList.add("hide");
 			popUpProjects.style.transition = "none";
 		});
+
+		this.handleProjectForm();
 	}
 }
