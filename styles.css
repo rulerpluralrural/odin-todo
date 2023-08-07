@@ -15,6 +15,7 @@
     --clr-green: #2de907;
     --light-gry: #d9d9da;
     --light-gry-opq: rgba(240, 237, 237, 0.541);
+    --dark-gry: #848485; 
     --overlay-clr:  rgba(54, 54, 54, 0.973);
     --white-clr: #fcfcfc;
     --black-clr: #282931;
@@ -358,6 +359,11 @@ div.content:nth-child(2) {
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
+}
+
+.completed-task {
+    text-decoration: line-through;
+    color: var(--dark-gry);
 }
 
 /************************/
