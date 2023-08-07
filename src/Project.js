@@ -1,10 +1,10 @@
 import Task from "./Task";
 
 export default class Project {
-	constructor(name) {
+	constructor(name, task = []) {
 		this.id = Math.floor(Math.random() * 500);
 		this.name = name;
-		this.tasks = [];
+		this.tasks = task;
 	}
 
 	createTask(name, dueDate, priority) {

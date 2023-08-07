@@ -2,10 +2,12 @@ import Task from "./Task";
 import { createTaskElement, taskHandler } from "./Task_Element";
 import Project from "./Project";
 import Todos from "./Todos";
+import { sidebarEventListener } from "./Sidebar";
 
 export default class UI {
 	static loadPage() {
 		this.toggleProjectPopUp();
+		sidebarEventListener();
 	}
 
 	static displayTasks() {
@@ -40,7 +42,7 @@ export default class UI {
 		<select name="priority" id="task-priority" required>
 			<option value="" disabled="" selected="">How important is this task?</option>
 			<option value="not-important">Not Important</option>
-			<option value="important">Important !</option>
+			<option value="important">Important</option>
 		</select>
 		<div class="form-buttons">
 			<button type="submit" class="task-submit-btn" id="task-submit-btn">Add</button>
@@ -154,10 +156,10 @@ export default class UI {
                 </div>
                 <div class="right-el">
                     <div id="edit-btn" class="edit-btn">
-                        <i class="fa-solid fa-pen-to-square"></i>
+                        <i class="fa-solid fa-pen-to-square" title="Edit Project"></i>
                     </div>
                     <div class="del-btn" data-delete-project>
-                        <i class="fa-solid fa-trash-can"></i>
+                        <i class="fa-solid fa-trash-can" title="Delete Project"></i>
                     </div>
                 </div>`;
 

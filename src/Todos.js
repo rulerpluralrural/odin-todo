@@ -1,8 +1,9 @@
 import Project from "./Project";
+import Task from "./Task";
 
 export default class Todos {
 	static projects = [
-		new Project("Sample Project 1"),
+		new Project("Sample Project 1", [new Task('Sample Task', '02/20/2023', 'Important')]),
 		new Project("Sample Project 2"),
 	];
 

@@ -12,8 +12,8 @@ export function createTaskElement(task) {
         <div class="todo-right-el">
             <p class="task-date">${format(new Date(task.dueDate), "MM/dd/yyyy")}</p>
             <p class="task-priority">${task.priority}</p>
-            <i class="fa-solid fa-pen-to-square pen" data-edit-task></i>
-            <i class="fa-solid fa-trash-can trash" data-delete-task></i>
+            <i class="fa-solid fa-pen-to-square pen" data-edit-task title="Edit Task"></i>
+            <i class="fa-solid fa-trash-can trash" data-delete-task title="Delete Task"></i>
         </div>
         `;
 	const checkbox = tasksElement.querySelector("input");
@@ -25,14 +25,19 @@ export function createTaskElement(task) {
 	tasksElement.addEventListener("click", (e) => {
 		if (e.target.classList.contains("fa-pen-to-square")) {
 			handleEditTaskForm(tasksElement, task);
-		}
-		if (e.target.classList.contains("fa-trash-can")) {
+		} else if (e.target.classList.contains("fa-trash-can")) {
 			const selectedProject = document.querySelector(".active-project");
 			const activeProject = Todos.getActiveProject(selectedProject);
 			tasksElement.remove();
 			activeProject.deleteTask(task.id);
 			console.log(Todos.projects);
-		}
+		} else if (e.target.tagName.toLowerCase() === 'input') {
+            if (e.target.checked) {
+                e.target.parentElement.classList.add('completed-task')
+            } else if (!e.target.checked) {
+                e.target.parentElement.classList.remove('completed-task')
+            }
+        }
 	});
 
 	return tasksElement;
@@ -55,8 +60,8 @@ const handleEditTaskForm = (tasksElement, task) => {
 		<label for="priority">Priority</label>
 		<select name="edit-task-priority" id="edit-task-priority" required>
 			<option value="" disabled="" selected="">How important is this task?</option>
-			<option value="Not-important">Not Important</option>
-			<option value="Important">Important !</option>
+			<option value="not-important">Not Important</option>
+			<option value="important">Important</option>
 		</select>
 		<div class="form-buttons">
 			<button type="submit" class="edit-task-submit-btn" id="edit-task-submit-btn">Add</button>
