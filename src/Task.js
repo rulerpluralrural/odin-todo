@@ -7,30 +7,6 @@ export default class Task {
 		this.complete = false;
 	}
 
-	getName() {
-		return this.name;
-	}
-
-	setName(name) {
-		this.name = name;
-	}
-
-	getDate() {
-		return this.dueDate;
-	}
-
-	setDate(dueDate) {
-		this.dueDate = dueDate;
-	}
-
-	getPriority() {
-		return this.priority;
-	}
-
-	setPriority(priority) {
-		this.priority = priority;
-	}
-
 	dateFormatted() {
 		const day = this.dueDate.split("/")[0];
 		const month = this.dueDate.split("/")[1];

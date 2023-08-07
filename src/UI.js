@@ -12,16 +12,13 @@ export default class UI {
 		const taskContainer = document.getElementById("todo-list");
 		const containerHeader = document.getElementById("content-header");
 		const selectedProject = document.querySelector(".active-project");
-		const activeProject = Todos.projects.find(
-			(project) => project.id == selectedProject.dataset.projectId
-		);
+		const activeProject = Todos.getActiveProject(selectedProject)
 
 		this.clearElement(taskContainer);
 		containerHeader.textContent = activeProject.name;
 		for (const task of activeProject.tasks) {
 			this.appendTask(task)
 		}
-		taskHandler()
 	}
 
 	static handleTaskForm() {
@@ -77,9 +74,7 @@ export default class UI {
 
 			const selectedProject = document.querySelector('.active-project')
 
-			const activeProject = Todos.projects.find(
-				(project) => project.id == selectedProject.dataset.projectId
-			);
+			const activeProject = Todos.getActiveProject(selectedProject)
 
 			const activeProjectTask = activeProject.createTask(
 				tasksTitle.value,

@@ -4,13 +4,7 @@ export default class Project {
 	constructor(name) {
 		this.id = Math.floor(Math.random() * 500);
 		this.name = name;
-		this.tasks = [{
-			name: 'Sample Task 1',
-			dueDate: '09/28/2024',
-			priority: 'Not Important',
-			id: 33,
-			complete: false
-		}];
+		this.tasks = [];
 	}
 
 	createTask(name, dueDate, priority) {
@@ -18,6 +12,12 @@ export default class Project {
 		this.tasks.push(newTask);
 
 		return newTask;
+	}
+
+	deleteTask(taskId) {
+		const taskToDelete = this.tasks.find(
+			(task) => task.id === taskId);
+		this.tasks.splice(this.tasks.indexOf(taskToDelete), 1);
 	}
 
 	getTask(taskId) {

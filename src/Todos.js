@@ -13,4 +13,10 @@ export default class Todos {
 		this.projects.splice(this.projects.indexOf(projectToDelete), 1);
 	}
 
+	static getActiveProject(selectedProject) {
+		return this.projects.find(
+			(project) => project.id == selectedProject.dataset.projectId
+		);
+	}
+
 }
