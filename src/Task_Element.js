@@ -1,7 +1,14 @@
+import Project from "./Project";
+import Task from "./Task";
 import Todos from "./Todos";
+// @ts-ignore
 import { format, compareAsc } from "date-fns";
 
-export function createTaskElement(task) {
+/**
+ * @param {Task} task
+ * @param {Project} project
+ */
+export function createTaskElement(task, project) {
 	const tasksElement = document.createElement("div");
 	tasksElement.classList.add("todo-card");
 	tasksElement.innerHTML += `
@@ -18,24 +25,31 @@ export function createTaskElement(task) {
         `;
 	const checkbox = tasksElement.querySelector("input");
 	checkbox.checked = task.complete;
-	checkbox.id = task.id;
+	checkbox.id = task.id.toString();
 	const label = tasksElement.querySelector("label");
-	label.htmlFor = task.id;
+	label.htmlFor = task.id.toString();
 
 	tasksElement.addEventListener("click", (e) => {
+		// @ts-ignore
 		if (e.target.classList.contains("fa-pen-to-square")) {
 			handleEditTaskForm(tasksElement, task);
+		// @ts-ignore
 		} else if (e.target.classList.contains("fa-trash-can")) {
-			const selectedProject = document.querySelector(".active-project");
-			const activeProject = Todos.getActiveProject(selectedProject);
 			tasksElement.remove();
-			activeProject.deleteTask(task.id);
+			project.deleteTask(task.id);
 			console.log(Todos.projects);
+		// @ts-ignore
 		} else if (e.target.tagName.toLowerCase() === 'input') {
+            // @ts-ignore
             if (e.target.checked) {
-                e.target.parentElement.classList.add('completed-task')
-            } else if (!e.target.checked) {
-                e.target.parentElement.classList.remove('completed-task')
+                // @ts-ignore
+                tasksElement.classList.add('completed-task')
+				task.complete = true
+            // @ts-ignore
+            } else {
+                // @ts-ignore
+                tasksElement.classList.remove('completed-task')
+				task.complete = false
             }
         }
 	});
@@ -43,6 +57,11 @@ export function createTaskElement(task) {
 	return tasksElement;
 }
 
+/**
+ * 
+ * @param {HTMLDivElement} tasksElement 
+ * @param {Task} task 
+ */
 const handleEditTaskForm = (tasksElement, task) => {
 	const popUpEditTaskForm = document.getElementById("pop-up-tasks-edit");
 	const editTaskFormContainer = document.getElementById("edit-tasks-form");
@@ -79,32 +98,40 @@ const handleEditTaskForm = (tasksElement, task) => {
 		const editTaskDate = document.getElementById("edit-task-date");
 		const editTaskPriority = document.getElementById("edit-task-priority");
 
-		if (editTaskTitle.value == null || editTaskTitle.value == "") {
+		// @ts-ignore
+		if (!editTaskTitle.value) {
 			return;
-		} else if (editTaskDate.value == null || editTaskDate.value == "") {
+		// @ts-ignore
+		} else if (!editTaskDate.value) {
 			return;
-		} else if (editTaskPriority.value == null || editTaskPriority.value == "") {
+		// @ts-ignore
+		} else if (!editTaskPriority.value) {
 			return;
 		} else if (
-			editTaskTitle.value !== null &&
-			editTaskTitle.value !== "" &&
-			editTaskDate.value !== null &&
-			editTaskDate.value !== "" &&
-			editTaskPriority.value !== null &&
-			editTaskPriority.value !== ""
+			// @ts-ignore
+			editTaskTitle.value &&
+			// @ts-ignore
+			editTaskDate.value &&
+			// @ts-ignore
+			editTaskPriority.value
 		) {
 			tasksElement.innerHTML = "";
 			tasksElement.innerHTML += `
-                <label class="todo">${editTaskTitle.value}
+                <label class="todo">${editTaskTitle.
+// @ts-ignore
+                value}
                     <input type="checkbox">
                     <span class="checkmark"></span>
                 </label>
                 <div class="todo-right-el">
                     <p class="task-date">
-                        ${format(new Date(editTaskDate.value), "MM/dd/yyyy")}
+                        ${format(new Date(editTaskDate.
+// @ts-ignore
+                        value), "MM/dd/yyyy")}
                                         </p>
                     <p class="task-priority">
                     ${
+											// @ts-ignore
 											editTaskPriority.options[editTaskPriority.selectedIndex]
 												.text
 										}
@@ -113,9 +140,12 @@ const handleEditTaskForm = (tasksElement, task) => {
                     <i class="fa-solid fa-trash-can trash" data-delete-task></i>
                 </div>
             `;
+			// @ts-ignore
 			task.name = editTaskTitle.value;
-			task.dueDate = editTaskDate.value;
-			task.priority = editTaskPriority.value;
+			// @ts-ignore
+			task.dueDate = format(new Date(editTaskDate.value), "MM/dd/yyyy");
+			// @ts-ignore
+			task.priority = editTaskPriority.options[editTaskPriority.selectedIndex].text
 			console.log(Todos.projects);
 			editTaskForm.reset();
 			popUpEditTaskForm.classList.add("hide");

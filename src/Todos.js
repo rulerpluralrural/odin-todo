@@ -3,8 +3,8 @@ import Task from "./Task";
 
 export default class Todos {
 	static projects = [
-		new Project("Sample Project 1", [new Task('Sample Task', '02/20/2023', 'Important')]),
-		new Project("Sample Project 2"),
+		new Project("General Cleaning", [new Task ('Cleaning the house', '02/20/2023', 'Important'), new Task ('Cleaning the attic', '08/08/2023', 'Not Important')]),
+		new Project("Creating a Bomb", [new Task('Bombastic', '08/18/2023', 'Important')])
 	];
 
 	static deleteProject(projectId) {

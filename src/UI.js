@@ -1,8 +1,9 @@
-import Task from "./Task";
-import { createTaskElement, taskHandler } from "./Task_Element";
+// @ts-ignore
+import { createTaskElement } from "./Task_Element";
 import Project from "./Project";
 import Todos from "./Todos";
 import { sidebarEventListener } from "./Sidebar";
+import format from "date-fns/format";
 
 export default class UI {
 	static loadPage() {
@@ -14,12 +15,12 @@ export default class UI {
 		const taskContainer = document.getElementById("todo-list");
 		const containerHeader = document.getElementById("content-header");
 		const selectedProject = document.querySelector(".active-project");
-		const activeProject = Todos.getActiveProject(selectedProject)
+		const activeProject = Todos.getActiveProject(selectedProject);
 
 		this.clearElement(taskContainer);
 		containerHeader.textContent = activeProject.name;
 		for (const task of activeProject.tasks) {
-			this.appendTask(task)
+			this.appendTask(task, activeProject);
 		}
 	}
 
@@ -57,35 +58,29 @@ export default class UI {
 			const tasksDate = document.getElementById("task-date");
 			const tasksPriority = document.getElementById("task-priority");
 
-			if (tasksTitle.value == null || tasksTitle.value == "") {
+			// @ts-ignore
+			if (!tasksTitle.value || !tasksDate.value || !tasksPriority.value) {
 				return;
-			} else if (tasksDate.value == null || tasksDate.value == "") {
-				return;
-			} else if (tasksPriority.value == null || tasksPriority.value == "") {
-				return;
-			} else if (
-				tasksTitle.value !== null &&
-				tasksTitle.value !== "" &&
-				tasksDate.value !== null &&
-				tasksDate.value !== "" &&
-				tasksPriority.value !== null &&
-				tasksPriority.value !== ""
-			) {
+				// @ts-ignore
+			} else {
 				popUpTasks.classList.add("hide");
 			}
 
-			const selectedProject = document.querySelector('.active-project')
+			const selectedProject = document.querySelector(".active-project");
 
-			const activeProject = Todos.getActiveProject(selectedProject)
+			const activeProject = Todos.getActiveProject(selectedProject);
 
 			const activeProjectTask = activeProject.createTask(
+				// @ts-ignore
 				tasksTitle.value,
-				tasksDate.value,
+				// @ts-ignore
+				format(new Date(tasksDate.value), "MM/dd/yyyy"),
+				// @ts-ignore
 				tasksPriority.options[tasksPriority.selectedIndex].text
 			);
 			tasksForm.reset();
 
-			this.appendTask(activeProjectTask)
+			this.appendTask(activeProjectTask, activeProject);
 		});
 
 		const tasksCancelButton = document.getElementById("task-cancel-btn");
@@ -96,10 +91,10 @@ export default class UI {
 		});
 	}
 
-	static appendTask(activeProjectTask) {
+	static appendTask(task, project) {
 		const taskContainer = document.getElementById("todo-list");
 
-		taskContainer.appendChild(createTaskElement(activeProjectTask));
+		taskContainer.appendChild(createTaskElement(task, project));
 	}
 
 	static handleProjectForm() {
@@ -111,26 +106,32 @@ export default class UI {
 
 		projectsForm.addEventListener("submit", (e) => {
 			e.preventDefault();
+			// @ts-ignore
 			const projectName = projectsInput.value;
 
 			if (projectName == null || projectName == "") return;
 
 			const newProject = new Project(projectName);
+			// @ts-ignore
 			projectsInput.value = null;
 			Todos.projects.push(newProject);
 			this.appendProject();
 		});
 
 		projectAddBtn.addEventListener("click", () => {
+			// @ts-ignore
 			const projectName = projectsInput.value;
 			if (projectName == null || projectName == "") return;
 			popUpProjects.classList.add("hide");
+			// @ts-ignore
 			popUpProjects.style.transition = "none";
 		});
 
 		projectsCancelBtn.addEventListener("click", () => {
 			popUpProjects.classList.add("hide");
+			// @ts-ignore
 			popUpProjects.style.transition = "none";
+			// @ts-ignore
 			projectsInput.value = null;
 		});
 
@@ -147,6 +148,7 @@ export default class UI {
 			const projectElement = document.createElement("button");
 			projectElement.classList.add("style-button");
 			projectElement.classList.add("projects");
+			// @ts-ignore
 			projectElement.dataset.projectId = project.id;
 
 			projectElement.innerHTML += `
@@ -167,11 +169,13 @@ export default class UI {
 				const activeProject = document.querySelector(".active-project");
 				const projectTitle = projectElement.children[0].children[1];
 
+				// @ts-ignore
 				if (e.target.classList.contains("fa-trash-can")) {
 					Todos.deleteProject(project.id);
 					projectElement.remove();
 					console.log(Todos.projects);
 					return;
+					// @ts-ignore
 				} else if (e.target.classList.contains("fa-pen-to-square")) {
 					this.toggleEditProject(projectTitle, project);
 					console.log(Todos.projects);
@@ -211,7 +215,7 @@ export default class UI {
 			popUpTasks.classList.add("hide");
 		});
 
-		this.handleTaskForm()
+		this.handleTaskForm();
 	}
 
 	static toggleEditProject(projectName, project) {
@@ -239,17 +243,23 @@ export default class UI {
 		);
 		const closeEditProject = document.getElementById("close-edit-project");
 		editProjectPopUp.classList.remove("hide");
+		// @ts-ignore
 		editProjectTitle.value = project.name;
 
 		editProjectForm.addEventListener("submit", (e) => {
 			e.preventDefault();
 
+			// @ts-ignore
 			if (editProjectTitle.value === null || editProjectTitle === "") return;
+			// @ts-ignore
 			if (editProjectTitle.value !== null || editProjectTitle.value !== "") {
 				editProjectPopUp.classList.add("hide");
 			}
+			// @ts-ignore
 			projectName.textContent = editProjectTitle.value;
+			// @ts-ignore
 			project.name = editProjectTitle.value;
+			// @ts-ignore
 			containerHeader.textContent = editProjectTitle.value;
 		});
 
@@ -270,12 +280,14 @@ export default class UI {
 		// show pop-up
 		addProjectBtn.addEventListener("click", () => {
 			popUpProjects.classList.remove("hide");
+			// @ts-ignore
 			popUpProjects.style.transition = "opacity 500ms ease-in";
 		});
 
 		// close pop-up
 		closePopUp.addEventListener("click", () => {
 			popUpProjects.classList.add("hide");
+			// @ts-ignore
 			popUpProjects.style.transition = "none";
 		});
 
