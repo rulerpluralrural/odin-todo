@@ -71,7 +71,16 @@ body .app-container {
     font-family: var(--font-two), 'serif';
 }
 
+.app-header {
+    position: relative;
+}
+
 .app-header .hamburger-menu {
+    position: absolute;
+    font-size: 1.9rem;
+    color: var(--white-clr);
+    cursor: pointer;
+    left: 3rem;
     display: none;
 }
 
@@ -393,7 +402,7 @@ div.content:nth-child(2) {
 .pop-up-tasks {
     position: relative;
     width: 550px;
-    height: 470px;
+    height: 500px;
     background-color: var(--white-clr);
     display: flex;
     flex-direction: column;
