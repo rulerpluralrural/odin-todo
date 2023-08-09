@@ -4,9 +4,6 @@ import Todos from "./Todos";
 import { isToday, isThisWeek, toDate } from "date-fns";
 
 export default class Project {
-	id;
-	name;
-	tasks;
 	/**
 	 * @param {string} name
 	 * @param {Task[]} tasks

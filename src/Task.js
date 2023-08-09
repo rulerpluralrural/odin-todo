@@ -1,12 +1,6 @@
 import Todos from "./Todos";
 
 export default class Task {
-	name;
-	dueDate;
-	priority;
-	id;
-	complete;
-	
 	constructor(name, dueDate, priority) {
 		this.name = name;
 		this.dueDate = dueDate;
