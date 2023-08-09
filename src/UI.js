@@ -1,5 +1,5 @@
 // @ts-ignore
-import { createTaskElement } from "./Task_Element";
+import { createTaskElement, isValidDate } from "./Task_Element";
 import Project from "./Project";
 import Todos from "./Todos";
 import { sidebarEventListener } from "./Sidebar";
@@ -38,7 +38,11 @@ export default class UI {
 		<label for="task-title">Title</label>
 		<input type="text" name="task-title" id="task-title" maxlength="30" required>
 		<label for="date">Due Date</label>
-		<input type="date" name="date" class="task-date" id="task-date" required>
+		<input type="date" name="date" class="task-date" id="task-date" min="${format(
+			new Date(),
+			"MM/dd/yyyy"
+		)}" max="12-31-9999" required>
+		<div id="error-date-message"></div>
 		<label for="priority">Priority</label>
 		<select name="priority" id="task-priority" required>
 			<option value="" disabled="" selected="">How important is this task?</option>
@@ -57,12 +61,32 @@ export default class UI {
 			const tasksTitle = document.getElementById("task-title");
 			const tasksDate = document.getElementById("task-date");
 			const tasksPriority = document.getElementById("task-priority");
+			const errorMessage = document.getElementById("error-date-message");
+			errorMessage.style.color = "red";
 
 			// @ts-ignore
 			if (!tasksTitle.value || !tasksDate.value || !tasksPriority.value) {
 				return;
 				// @ts-ignore
+			}
+			// Validate the input date
+			//@ts-ignore
+			if (
+				// @ts-ignore
+				!isValidDate(tasksDate.value) &&
+				// @ts-ignore
+				tasksTitle.value &&
+				// @ts-ignore
+				tasksDate.value &&
+				// @ts-ignore
+				tasksPriority.value
+			) {
+				// Handle the case of an invalid date input (e.g., show an error message)
+				errorMessage.textContent =
+					"Invalid date format. Please use MM/DD/YYYY format.";
+				return;
 			} else {
+				errorMessage.textContent = "";
 				popUpTasks.classList.add("hide");
 			}
 
@@ -258,7 +282,7 @@ export default class UI {
 			// @ts-ignore
 			projectName.textContent = editProjectTitle.value;
 			// @ts-ignore
-			project.name = editProjectTitle.value;
+			project.edit(editProjectTitle.value);
 			// @ts-ignore
 			containerHeader.textContent = editProjectTitle.value;
 		});

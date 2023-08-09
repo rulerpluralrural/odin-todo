@@ -1,14 +1,12 @@
 import Task from "./Task";
-import {
-	isToday,
-	isThisWeek,
-	toDate,
-	subDays,
-	isWithinInterval,
-	addDays,
-} from "date-fns";
+import Todos from "./Todos";
+
+import { isToday, isThisWeek, toDate } from "date-fns";
 
 export default class Project {
+	id;
+	name;
+	tasks;
 	/**
 	 * @param {string} name
 	 * @param {Task[]} tasks
@@ -27,7 +25,7 @@ export default class Project {
 	createTask(name, dueDate, priority) {
 		const newTask = new Task(name, dueDate, priority);
 		this.tasks.push(newTask);
-
+		Todos.saveToLocalStorage();	
 		return newTask;
 	}
 
@@ -37,6 +35,15 @@ export default class Project {
 	deleteTask(taskId) {
 		const taskToDelete = this.tasks.find((task) => task.id === taskId);
 		if (taskToDelete) this.tasks.splice(this.tasks.indexOf(taskToDelete), 1);
+		Todos.saveToLocalStorage()
+	}
+
+	/**
+	 * @param {string} name
+	 */
+	edit(name) {
+		this.name = name
+		Todos.saveToLocalStorage()
 	}
 
 	/**
@@ -63,9 +70,9 @@ export default class Project {
 
 	getTasksThisWeek() {
 		return this.tasks.filter((task) => {
-			console.log(task.dueDate)
+			console.log(task.dueDate);
 			const taskDate = new Date(task.dueDate);
-			return isThisWeek(new Date(taskDate))
+			return isThisWeek(new Date(taskDate));
 		});
 	}
 }

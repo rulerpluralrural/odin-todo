@@ -2,7 +2,7 @@ import Project from "./Project";
 import Task from "./Task";
 import Todos from "./Todos";
 // @ts-ignore
-import { format, compareAsc } from "date-fns";
+import { format } from "date-fns";
 
 /**
  * @param {Task} task
@@ -17,7 +17,10 @@ export function createTaskElement(task, project) {
             <span class="checkmark"></span>
         </label>
         <div class="todo-right-el">
-            <p class="task-date">${format(new Date(task.dueDate), "MM/dd/yyyy")}</p>
+            <p class="task-date">${format(
+							new Date(task.dueDate),
+							"MM/dd/yyyy"
+						)}</p>
             <p class="task-priority">${task.priority}</p>
             <i class="fa-solid fa-pen-to-square pen" data-edit-task title="Edit Task"></i>
             <i class="fa-solid fa-trash-can trash" data-delete-task title="Delete Task"></i>
@@ -25,6 +28,13 @@ export function createTaskElement(task, project) {
         `;
 	const checkbox = tasksElement.querySelector("input");
 	checkbox.checked = task.complete;
+	if (task.complete === true) {
+		// @ts-ignore
+		tasksElement.classList.add("completed-task");
+	} else if (task.complete === false) {
+		// @ts-ignore
+		tasksElement.classList.remove("completed-task");
+	}
 	checkbox.id = task.id.toString();
 	const label = tasksElement.querySelector("label");
 	label.htmlFor = task.id.toString();
@@ -33,34 +43,31 @@ export function createTaskElement(task, project) {
 		// @ts-ignore
 		if (e.target.classList.contains("fa-pen-to-square")) {
 			handleEditTaskForm(tasksElement, task);
-		// @ts-ignore
+			// @ts-ignore
 		} else if (e.target.classList.contains("fa-trash-can")) {
 			tasksElement.remove();
 			project.deleteTask(task.id);
 			console.log(Todos.projects);
-		// @ts-ignore
-		} else if (e.target.tagName.toLowerCase() === 'input') {
-            // @ts-ignore
-            if (e.target.checked) {
-                // @ts-ignore
-                tasksElement.classList.add('completed-task')
-				task.complete = true
-            // @ts-ignore
-            } else {
-                // @ts-ignore
-                tasksElement.classList.remove('completed-task')
-				task.complete = false
-            }
-        }
+			// @ts-ignore
+		} else if (e.target.tagName.toLowerCase() === "input") {
+			task.toggleComplete();
+			// @ts-ignore
+			if (task.complete === true) {
+				tasksElement.classList.add("completed-task");
+			} else if (task.complete === false) {
+				// @ts-ignore
+				tasksElement.classList.remove("completed-task");
+			}
+		}
 	});
 
 	return tasksElement;
 }
 
 /**
- * 
- * @param {HTMLDivElement} tasksElement 
- * @param {Task} task 
+ *
+ * @param {HTMLDivElement} tasksElement
+ * @param {Task} task
  */
 const handleEditTaskForm = (tasksElement, task) => {
 	const popUpEditTaskForm = document.getElementById("pop-up-tasks-edit");
@@ -75,7 +82,11 @@ const handleEditTaskForm = (tasksElement, task) => {
     <label for="edit-task-title">Title</label>
 		<input type="text" name="task-title" id="edit-task-title" maxlength="30" required>
 		<label for="date">Due Date</label>
-		<input type="date" name="date" class="task-date" id="edit-task-date" required>
+		<input type="date" name="date" class="task-date" id="edit-task-date" min="${format(
+			new Date(),
+			"MM/dd/yyyy"
+		)}" max="12-31-9999" required>
+		<div id="edit-task-message"></div>
 		<label for="priority">Priority</label>
 		<select name="edit-task-priority" id="edit-task-priority" required>
 			<option value="" disabled="" selected="">How important is this task?</option>
@@ -97,17 +108,25 @@ const handleEditTaskForm = (tasksElement, task) => {
 		const editTaskTitle = document.getElementById("edit-task-title");
 		const editTaskDate = document.getElementById("edit-task-date");
 		const editTaskPriority = document.getElementById("edit-task-priority");
+		const editTaskMessage = document.getElementById("edit-task-message");
+		editTaskMessage.style.color = "red";
 
 		// @ts-ignore
-		if (!editTaskTitle.value) {
+		if (
+			// @ts-ignore
+			!editTaskTitle.value ||
+			// @ts-ignore
+			!editTaskDate.value ||
+			// @ts-ignore
+			!editTaskPriority.value
+		) {
 			return;
+		}
+		// Validate the input date
 		// @ts-ignore
-		} else if (!editTaskDate.value) {
-			return;
-		// @ts-ignore
-		} else if (!editTaskPriority.value) {
-			return;
-		} else if (
+		if (
+			// @ts-ignore
+			!isValidDate(editTaskDate.value) &&
 			// @ts-ignore
 			editTaskTitle.value &&
 			// @ts-ignore
@@ -115,19 +134,30 @@ const handleEditTaskForm = (tasksElement, task) => {
 			// @ts-ignore
 			editTaskPriority.value
 		) {
+			// Handle the case of an invalid date input (e.g., show an error message)
+			editTaskMessage.textContent =
+				"Invalid date format. Please use MM/DD/YYYY format.";
+			return;
+		} else {
+			editTaskMessage.textContent = "";
 			tasksElement.innerHTML = "";
 			tasksElement.innerHTML += `
-                <label class="todo">${editTaskTitle.
-// @ts-ignore
-                value}
+                <label class="todo">${
+									// @ts-ignore
+									editTaskTitle.value
+								}
                     <input type="checkbox">
                     <span class="checkmark"></span>
                 </label>
                 <div class="todo-right-el">
                     <p class="task-date">
-                        ${format(new Date(editTaskDate.
-// @ts-ignore
-                        value), "MM/dd/yyyy")}
+                        ${format(
+													new Date(
+														// @ts-ignore
+														editTaskDate.value
+													),
+													"MM/dd/yyyy"
+												)}
                                         </p>
                     <p class="task-priority">
                     ${
@@ -140,13 +170,17 @@ const handleEditTaskForm = (tasksElement, task) => {
                     <i class="fa-solid fa-trash-can trash" data-delete-task></i>
                 </div>
             `;
+			popUpEditTaskForm.classList.add("hide");
+			console.log(task);
 			// @ts-ignore
-			task.name = editTaskTitle.value;
-			// @ts-ignore
-			task.dueDate = format(new Date(editTaskDate.value), "MM/dd/yyyy");
-			// @ts-ignore
-			task.priority = editTaskPriority.options[editTaskPriority.selectedIndex].text
-			console.log(Todos.projects);
+			task.editTask({
+				// @ts-ignore
+				name: editTaskTitle.value,
+				// @ts-ignore
+				dueDate: format(new Date(editTaskDate.value), "MM/dd/yyyy"),
+				// @ts-ignore
+				priority: editTaskPriority.options[editTaskPriority.selectedIndex].text,
+			});
 			editTaskForm.reset();
 			popUpEditTaskForm.classList.add("hide");
 		}
@@ -160,4 +194,9 @@ const handleEditTaskForm = (tasksElement, task) => {
 		editTaskForm.reset();
 		popUpEditTaskForm.classList.add("hide");
 	});
+};
+
+export const isValidDate = (date) => {
+	// Convert the input date to a Date object and check if it's valid
+	return !isNaN(new Date(date).getTime());
 };
