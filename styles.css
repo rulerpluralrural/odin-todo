@@ -84,31 +84,9 @@ body .app-container {
 	display: none;
 }
 
-@media only screen and (max-width: 900px) {
-	.app-header .hamburger-menu {
-		display: block;
-	}
-    .app-header {
-        text-align: center;
-    }
-	.app-sidebar {
-		position: absolute;
-        width: 500px;
-        height: 100vh;
-		transform: translateX(-100%);
-        transition: transform 200ms linear;
-        z-index: 50;
-	}
-    .show-sidebar {
-        transform: translateX(0);
-    }
-	div.app-body {
-		grid-template-columns: 1fr;
-	}
-	.app-body .content {
-        width: 100vw;
-		grid-column: 1/-1;
-	}
+.hamburger-menu i {
+	padding: 0;
+	margin: 0;
 }
 
 .app-container .app-body {
@@ -183,6 +161,34 @@ body .app-container {
 	flex-direction: column;
 	align-items: center;
 }
+
+@media only screen and (max-width: 900px) {
+	.app-header .hamburger-menu {
+		display: block;
+	}
+    .app-header {
+        text-align: center;
+    }
+	.app-sidebar {
+		position: absolute;
+        width: 500px;
+		height: 100vh;
+		transform: translateX(-110%);
+        transition: transform 200ms linear;
+        z-index: 50;
+	}
+    .show-sidebar {
+        transform: translateX(0);
+    }
+	div.app-body {
+		grid-template-columns: 1fr;
+	}
+	.app-body .content {
+        width: 100vw;
+		grid-column: 1/-1;
+	}
+}
+
 
 /* Added project styling */
 
